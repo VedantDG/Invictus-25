@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedTec - Medication Adherence Website </title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.10.3/cdn.min.js" defer></script>
+    <style>
+        /* Basic Reset */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            min-height: 100vh;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        
+        /* Dark Mode */
+        body.dark-mode {
+            background-color: #222;
+            color: #f0f0f0;
+        }
+        
+        /* Navigation */
+        nav {
+            position: fixed;
+            width: 100%;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            z-index: 10;
+        }
+        
+        body.dark-mode nav {
+            background-color: #333;
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 60px;
+        }
+        
+        .nav-logo {
+            font-weight: bold;
+            font-size: 1.5rem;
+            color: #4682B4;
+        }
+        
+        body.dark-mode .nav-logo {
+            color: #78B1E8;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .nav-link {
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+        
+        .nav-link:hover {
+            background-color: #f0f0f0;
+        }
+        
+        body.dark-mode .nav-link:hover {
+            background-color: #444;
+        }
+        
+        .nav-link.active {
+            background-color: #4682B4;
+            color: white;
+        }
+        
+        body.dark-mode .nav-link.active {
+            background-color: #2C5282;
+        }
+        
+        .mobile-menu-button {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #333;
+        }
+        
+        body.dark-mode .mobile-menu-button {
+            color: #f0f0f0;
+        }
+        
+        /* Container for all content */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 80px 20px 20px;
+        }
+        
+        /* Card styling */
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        
+        body.dark-mode .card {
+            background-color: #333;
+        }
+        
+        .card-header {
+            padding: 15px 20px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        body.dark-mode .card-header {
+            border-bottom-color: #444;
+        }
+        
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        
+        .card-content {
+            padding: 20px;
+        }
+        
+        .card-footer {
+            padding: 15px 20px;
+            background-color: #f9f9f9;
+            border-top: 1px solid #eee;
+        }
+        
+        body.dark-mode .card-footer {
+            background-color: #2a2a2a;
+            border-top-color: #444;
+        }
+        
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-align: center;
+            border: none;
+        }
+        
+        .btn-primary {
+            background-color: #4682B4;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #3A6B9B;
+        }
+        
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+        
+        .btn-danger {
+            background-color: #dc3545;
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+        
+        /* Forms */
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+        
+        body.dark-mode .form-control {
+            background-color: #444;
+            border-color: #555;
+            color: #f0f0f0;
+        }
+        
+        /* Grid layout */
+        .grid {
+            display: grid;
+            gap: 20px;
+        }
+        
+        .grid-2 {
+            grid-template-columns: 1fr 1fr;
+        }
+        
+        /* Medication list */
+        .med-list {
+            list-style: none;
+        }
+        
+        .med-item {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        body.dark-mode .med-item {
+            border-bottom-color: #444;
+        }
+        
+        .med-item:last-child {
+            border-bottom: none;
+        }
+        
+        /* Utilities */
+        .text-center {
+            text-align: center;
+        }
+        
+        .mt-2 {
+            margin-top: 10px;
+        }
+        
+        .mb-4 {
+            margin-bottom: 20px;
+        }
+        
+        .color-blue {
+            color: #4682B4;
+        }
+        
+        body.dark-mode .color-blue {
+            color: #78B1E8;
+        }
+        
+        /* Auth pages */
+        .auth-container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding-top: 100px;
+        }
+        
+        /* Hide when needed */
+        .hidden {
+            display: none;
+        }
+        
+        /* Mobile responsiveness */
+        @media (max-width: 768px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .nav-links.open {
+                display: flex;
+                flex-direction: column;
+                position: absolute;
+                top: 60px;
+                left: 0;
+                right: 0;
+                background-color: white;
+                padding: 20px;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            }
+            
+            body.dark-mode .nav-links.open {
+                background-color: #333;
+            }
+            
+            .mobile-menu-button {
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body x-data="{ 
+    darkMode: localStorage.getItem('darkMode') === 'true',
+    currentPage: 'landing',
+    mobileMenuOpen: false,
+    medications: [
+        { id: 1, name: 'Lisinopril', dosage: '10mg', frequency: 'Once daily', time: '08:00', instructions: 'Take with food', refill: '2025-03-20' },
+        { id: 2, name: 'Metformin', dosage: '500mg', frequency: 'Twice daily', time: '08:00, 20:00', instructions: 'Take with meals', refill: '2025-03-15' },
+        { id: 3, name: 'Atorvastatin', dosage: '20mg', frequency: 'Once daily', time: '20:00', instructions: 'Take in the evening', refill: '2025-04-01' }
+    ],
+    reminders: [
+        { id: 1, medication: 'Lisinopril', time: '08:00', date: '2025-03-02', taken: false },
+        { id: 2, medication: 'Metformin', time: '08:00', date: '2025-03-02', taken: false },
+        { id: 3, medication: 'Metformin', time: '20:00', date: '2025-03-01', taken: true },
+        { id: 4, medication: 'Atorvastatin', time: '20:00', date: '2025-03-01', taken: true }
+    ],
+    pharmacies: [
+        { id: 1, name: 'Walgreens Pharmacy', address: '123 Main St', distance: '0.5 miles', phone: '(555) 123-4567' },
+        { id: 2, name: 'CVS Pharmacy', address: '456 Oak Ave', distance: '1.2 miles', phone: '(555) 987-6543' },
+        { id: 3, name: 'Rite Aid Pharmacy', address: '789 Pine Blvd', distance: '2.4 miles', phone: '(555) 456-7890' },
+        { id: 4, name: 'Local Health Pharmacy', address: '321 Maple Dr', distance: '3.1 miles', phone: '(555) 789-0123' }
+    ],
+    newMedication: { name: '', dosage: '', frequency: 'Once daily', time: '', instructions: '', refill: '' },
+    toggleDarkMode() {
+        this.darkMode = !this.darkMode;
+        localStorage.setItem('darkMode', this.darkMode);
+    },
+    addMedication() {
+        if (this.newMedication.name && this.newMedication.dosage && this.newMedication.time) {
+            const maxId = this.medications.length > 0 ? Math.max(...this.medications.map(m => m.id)) : 0;
+            const newMed = {...this.newMedication, id: maxId + 1};
+            this.medications.push(newMed);
+            this.newMedication = { name: '', dosage: '', frequency: 'Once daily', time: '', instructions: '', refill: '' };
+        }
+    },
+    formatDate(dateStr) {
+        const date = new Date(dateStr);
+        return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+    },
+    getUpcomingDoses() {
+        return this.reminders.filter(r => !r.taken).slice(0, 3);
+    },
+    getRefillsNeeded() {
+        const today = new Date();
+        const twoWeeksFromNow = new Date();
+        twoWeeksFromNow.setDate(today.getDate() + 14);
+        
+        return this.medications.filter(med => {
+            const refillDate = new Date(med.refill);
+            return refillDate <= twoWeeksFromNow;
+        });
+    }
+}" :class="{ 'dark-mode': darkMode }">
+
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <div class="nav-logo">MedTec</div>
+            <div class="nav-links" :class="{ 'open': mobileMenuOpen }" x-show="currentPage !== 'landing' && currentPage !== 'login' && currentPage !== 'signup'">
+                <button @click="currentPage = 'dashboard'" class="nav-link" :class="{ 'active': currentPage === 'dashboard' }">Dashboard</button>
+                <button @click="currentPage = 'medications'" class="nav-link" :class="{ 'active': currentPage === 'medications' }">Medications</button>
+                <button @click="currentPage = 'reminders'" class="nav-link" :class="{ 'active': currentPage === 'reminders' }">Reminders</button>
+                <button @click="currentPage = 'pharmacies'" class="nav-link" :class="{ 'active': currentPage === 'pharmacies' }">Pharmacies</button>
+                <button @click="currentPage = 'landing'" class="btn btn-danger">Logout</button>
+            </div>
+            <div>
+                <button @click="toggleDarkMode" class="btn">
+                    <span x-text="darkMode ? 'Light Mode' : 'Dark Mode'"></span>
+                </button>
+                <button @click="mobileMenuOpen = !mobileMenuOpen" class="mobile-menu-button">☰</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Landing Page -->
+    <div x-show="currentPage === 'landing'">
+        <div class="auth-container">
+            <div class="card">
+                <div class="card-content text-center">
+                    <h1 class="color-blue" style="font-size: 2rem; margin-bottom: 10px;">MedTrack</h1>
+                    <h2 style="margin-bottom: 10px;">Your Personal Medication Assistant</h2>
+                    <p class="mb-4">Never miss a dose with our medication adherence tracking website </p>
+                    
+                    <button @click="currentPage = 'login'" class="btn btn-primary" style="width: 100%; margin-bottom: 10px;">Login</button>
+                    <button @click="currentPage = 'signup'" class="btn btn-secondary" style="width: 100%;">Sign now</button>
+                    
+                    <p class="mt-2" style="font-size: 0.8rem;">
+                        By using MedTec, you agree to our <a href="#" class="color-blue">Terms of Service</a> and <a href="#" class="color-blue">Privacy Policy</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Page -->
+    <div x-show="currentPage === 'login'">
+        <div class="auth-container">
+            <div class="card">
+                <div class="card-content">
+                    <h1 class="color-blue text-center" style="font-size: 2rem; margin-bottom: 10px;">MedTec</h1>
+                    <h2 class="text-center mb-4">Login to your account</h2>
+                    
+                    <form @submit.prevent="currentPage = 'dashboard'">
+                        <div class="form-group">
+                            <label for="email" class="form-label">Email address</label>
+                            <input type="email" id="email" class="form-control" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" id="password" class="form-control" required>
+                        </div>
+                        
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
+                            <div>
+                                <input type="checkbox" id="remember">
+                                <label for="remember">Remember me</label>
+                            </div>
+                            <a href="#" class="color-blue">Forgot password?</a>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">Sign in</button>
+                    </form>
+                    
+                    <div class="text-center mt-2">
+                        <button @click="currentPage = 'signup'" class="color-blue" style="background: none; border: none; cursor: pointer;">
+                            Don't have an account? Sign up
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Signup Page -->
+    <div x-show="currentPage === 'signup'">
+        <div class="auth-container">
+            <div class="card">
+                <div class="card-content">
+                    <h1 class="color-blue text-center" style="font-size: 2rem; margin-bottom: 10px;">MedTrack</h1>
+                    <h2 class="text-center mb-4">Create your account</h2>
+                    
+                    <form @submit.prevent="currentPage = 'dashboard'">
+                        <div class="form-group">
+                            <label for="fullname" class="form-label">Full name</label>
+                            <input type="text" id="fullname" class="form-control" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="signup-email" class="form-label">Email address</label>
+                            <input type="email" id="signup-email" class="form-control" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="signup-password" class="form-label">Password</label>
+                            <input type="password" id="signup-password" class="form-control" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="confirm-password" class="form-label">Confirm password</label>
+                            <input type="password" id="confirm-password" class="form-control" required>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">Sign up</button>
+                    </form>
+                    
+                    <div class="text-center mt-2">
+                        <button @click="currentPage = 'login'" class="color-blue" style="background: none; border: none; cursor: pointer;">
+                            Already have an account? Log in
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard -->
+    <div x-show="currentPage === 'dashboard'" class="container">
+        <h1 class="mb-4">Dashboard</h1>
+        
+        <div class="grid grid-2">
+            <!-- Today's Schedule -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">Today's Schedule</div>
+                </div>
+                <div class="card-content">
+                    <template x-for="reminder in getUpcomingDoses()" :key="reminder.id">
+                        <div style="padding: 10px; margin-bottom: 10px; background-color: #f5f5f5; border-radius: 4px;">
+                            <div style="display: flex; justify-content: space-between;">
+                                <div>
+                                    <span style="font-weight: 500;" x-text="reminder.medication"></span>
+                                    <span style="margin-left: 10px; color: #666;" x-text="reminder.time"></span>
+                                </div>
+                                <button class="btn" :class="reminder.taken ? 'btn-secondary' : 'btn-primary'">
+                                    <span x-text="reminder.taken ? 'Taken' : 'Take Now'"></span>
+                                </button>
+                            </div>
+                        </div>
+                    </template>
+                    <div x-show="getUpcomingDoses().length === 0" class="text-center" style="padding: 20px; color: #666;">
+                        No upcoming doses for today
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button @click="currentPage = 'reminders'" class="color-blue" style="background: none; border: none; cursor: pointer;">
+                        View all reminders →
+                    </button>
+                </div>
+            </div>
+
+            <!-- Refills Needed -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">Refills Needed</div>
+                </div>
+                <div class="card-content">
+                    <template x-for="med in getRefillsNeeded()" :key="med.id">
+                        <div style="padding: 10px; margin-bottom: 10px; background-color: #f5f5f5; border-radius: 4px;">
+                            <div style="display: flex; justify-content: space-between;">
+                                <div>
+                                    <span style="font-weight: 500;" x-text="med.name"></span>
+                                    <span style="margin-left: 10px; color: #666;" x-text="med.dosage"></span>
+                                </div>
+                                <div style="color: #d33;">
+                                    Refill by <span x-text="formatDate(med.refill)"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+                    <div x-show="getRefillsNeeded().length === 0" class="text-center" style="padding: 20px; color: #666;">
+                        No refills needed soon
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button @click="currentPage = 'medications'" class="color-blue" style="background: none; border: none; cursor: pointer;">
+                        Manage medications →
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Adherence Stats -->
+        <div class="card mt-2">
+            <div class="card-header">
+                <div class="card-title">Adherence Statistics</div>
+            </div>
+            <div class="card-content">
+                <div style="display: flex; gap: 20px; text-align: center;">
+                    <div style="flex: 1; padding: 15px; background-color: #e8f5e9; border-radius: 4px;">
+                        <div style="font-size: 1.5rem; font-weight: bold; color: #388e3c;">92%</div>
+                        <div>Weekly Adherence</div>
+                    </div>
+                    <div style="flex: 1; padding: 15px; background-color: #e3f2fd; border-radius: 4px;">
+                        <div style="font-size: 1.5rem; font-weight: bold; color: #1976d2;">89%</div>
+                        <div>Monthly Adherence</div>
+                    </div>
+                    <div style="flex: 1; padding: 15px; background-color: #f3e5f5; border-radius: 4px;">
+                        <div style="font-size: 1.5rem; font-weight: bold; color: #7b1fa2;">7</div>
+                        <div>Day Streak</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Medications Page -->
+    <div x-show="currentPage === 'medications'" class="container">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h1>Medications</h1>
+            <button class="btn btn-primary">Add Medication</button>
+        </div>
+        
+        <div class="card">
+            <ul class="med-list">
+                <template x-for="med in medications" :key="med.id">
+                    <li class="med-item">
+                        <div style="display: flex; justify-content: space-between;">
+                            <div>
+                                <h3 x-text="med.name" style="font-weight: 600;"></h3>
+                                <div style="color: #666; margin-top: 5px;">
+                                    <span x-text="med.dosage"></span> ·
+                                    <span x-text="med.frequency"></span> ·
+                                    <span x-text="med.time"></span>
+                                </div>
+                                <div style="margin-top: 5px;">
+                                    <span style="color: #666;">Instructions:</span>
+                                    <span x-text="med.instructions"></span>
+                                </div>
+                            </div>
+                            <div>
+                                <button class="btn btn-secondary" style="margin-right: 5px;">Edit</button>
+                                <button class="btn btn-danger">Delete</button>
+                            </div>
+                        </div>
+                    </li>
+                </template>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Reminders Page -->
+    <div x-show="currentPage === 'reminders'" class="container">
+        <h1 class="mb-4">Reminders</h1>
+        
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">Upcoming Reminders</div>
+            </div>
+            <div class="card-content">
+                <template x-for="reminder in reminders.filter(r => !r.taken)" :key="reminder.id">
+                    <div style="padding: 15px; margin-bottom: 10px; background-color: #f5f5f5; border-radius: 4px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <h3 x-text="reminder.medication" style="font-weight: 600;"></h3>
+                                <div style="color: #666; margin-top: 5px;">
+                                    <span x-text="formatDate(reminder.date)"></span> at
+                                    <span x-text="reminder.time"></span>
+                                </div>
+                            </div>
+                            <button class="btn btn-primary">Take Now</button>
+                        </div>
+                    </div>
+                </template>
+            </div>
+        </div>
+        
+        <div class="card mt-2">
+            <div class="card-header">
+                <div class="card-title">Medication History</div>
+            </div>
+            <div class="card-content">
+                <template x-for="reminder in reminders.filter(r => r.taken)" :key="reminder.id">
+                    <div style="padding: 15px; margin-bottom: 10px; background-color: #f5f5f5; border-radius: 4px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <h3 x-text="reminder.medication" style="font-weight: 600;"></h3>
+                                <div style="color: #666; margin-top: 5px;">
+                                    <span x-text="formatDate(reminder.date)"></span> at
+                                    <span x-text="reminder.time"></span>
+                                </div>
+                            </div>
+                            <span style="color: #388e3c; font-weight: 500;">Taken ✓</span>
+                        </div>
+                    </div>
+                </template>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pharmacies Page -->
+    <div x-show="currentPage === 'pharmacies'" class="container">
+        <h1 class="mb-4">Nearby Pharmacies</h1>
+        
+        <div class="card mb-4">
+            <div class="card-content">
+                <div class="form-group" style="margin-bottom: 0;">
+                    <input type="text" class="form-control" placeholder="Search pharmacies...">
+                </div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <ul class="med-list">
+                <template x-for="pharmacy in pharmacies" :key="pharmacy.id">
+                    <li class="med-item">
+                        <div>
+                            <h3 x-text="pharmacy.name" style="font-weight: 600;"></h3>
+                            <div style="margin-top: 5px;">
+                                <div x-text="pharmacy.address"></div>
+                                <div style="display: flex; justify-content: space-between; margin-top: 5px;">
+                                    <span x-text="pharmacy.distance"></span>
+                                    <span x-text="pharmacy.phone"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="margin-top: 10px;">
+                            <button class="btn btn-primary">Get Directions</button>
+                            <button class="btn btn-secondary" style="margin-left: 10px;">Call</button>
+                        </div>
+                    </li>
+                </template>
+            </ul>
+        </div>
+    </div>
+
+    <div></div>
+</body>
+</html>
