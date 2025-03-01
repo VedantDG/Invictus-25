@@ -1,0 +1,301 @@
+
+        /* Basic Reset */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            min-height: 100vh;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        
+        /* Dark Mode */
+        body.dark-mode {
+            background-color: #222;
+            color: #f0f0f0;
+        }
+        
+        /* Navigation */
+        nav {
+            position: fixed;
+            width: 100%;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            z-index: 10;
+        }
+        
+        body.dark-mode nav {
+            background-color: #333;
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 60px;
+        }
+        
+        .nav-logo {
+            font-weight: bold;
+            font-size: 1.5rem;
+            color: #4682B4;
+        }
+        
+        body.dark-mode .nav-logo {
+            color: #78B1E8;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .nav-link {
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+        
+        .nav-link:hover {
+            background-color: #f0f0f0;
+        }
+        
+        body.dark-mode .nav-link:hover {
+            background-color: #444;
+        }
+        
+        .nav-link.active {
+            background-color: #4682B4;
+            color: white;
+        }
+        
+        body.dark-mode .nav-link.active {
+            background-color: #2C5282;
+        }
+        
+        .mobile-menu-button {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #333;
+        }
+        
+        body.dark-mode .mobile-menu-button {
+            color: #f0f0f0;
+        }
+        
+        /* Container for all content */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 80px 20px 20px;
+        }
+        
+        /* Card styling */
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        
+        body.dark-mode .card {
+            background-color: #333;
+        }
+        
+        .card-header {
+            padding: 15px 20px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        body.dark-mode .card-header {
+            border-bottom-color: #444;
+        }
+        
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        
+        .card-content {
+            padding: 20px;
+        }
+        
+        .card-footer {
+            padding: 15px 20px;
+            background-color: #f9f9f9;
+            border-top: 1px solid #eee;
+        }
+        
+        body.dark-mode .card-footer {
+            background-color: #2a2a2a;
+            border-top-color: #444;
+        }
+        
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-align: center;
+            border: none;
+        }
+        
+        .btn-primary {
+            background-color: #4682B4;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #3A6B9B;
+        }
+        
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+        
+        .btn-danger {
+            background-color: #dc3545;
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+        
+        /* Forms */
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+        
+        body.dark-mode .form-control {
+            background-color: #444;
+            border-color: #555;
+            color: #f0f0f0;
+        }
+        
+        /* Grid layout */
+        .grid {
+            display: grid;
+            gap: 20px;
+        }
+        
+        .grid-2 {
+            grid-template-columns: 1fr 1fr;
+        }
+        
+        /* Medication list */
+        .med-list {
+            list-style: none;
+        }
+        
+        .med-item {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        body.dark-mode .med-item {
+            border-bottom-color: #444;
+        }
+        
+        .med-item:last-child {
+            border-bottom: none;
+        }
+        
+        /* Utilities */
+        .text-center {
+            text-align: center;
+        }
+        
+        .mt-2 {
+            margin-top: 10px;
+        }
+        
+        .mb-4 {
+            margin-bottom: 20px;
+        }
+        
+        .color-blue {
+            color: #4682B4;
+        }
+        
+        body.dark-mode .color-blue {
+            color: #78B1E8;
+        }
+        
+        /* Auth pages */
+        .auth-container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding-top: 100px;
+        }
+        
+        /* Hide when needed */
+        .hidden {
+            display: none;
+        }
+        
+        /* Mobile responsiveness */
+        @media (max-width: 768px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .nav-links.open {
+                display: flex;
+                flex-direction: column;
+                position: absolute;
+                top: 60px;
+                left: 0;
+                right: 0;
+                background-color: white;
+                padding: 20px;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            }
+            
+            body.dark-mode .nav-links.open {
+                background-color: #333;
+            }
+            
+            .mobile-menu-button {
+                display: block;
+            }
+        }
